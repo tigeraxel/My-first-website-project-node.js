@@ -1,0 +1,18 @@
+
+header{font-family: Georgia, 'Times New Roman', Times, serif;}
+main{font-family: Georgia, 'Times New Roman', Times, serif;}
+footer{font-family: Georgia, 'Times New Roman', Times, serif;}
+#titel1{ font-size: 45px;
+    text-decoration-line: underline; text-decoration-thickness: 2px;
+    display: inline; margin-right: 10px;}
+h1{border: 0px;}
+.btn{font-size: 20px; display: inline; text-decoration-line: none; }
+.navbar{display: inline; margin-bottom: 0; margin-top: auto; }
+.btn-link{text-decoration-line: none; }
+.btn .btn-link{text-decoration-line: none;}
+#loggain{ margin-left: auto; float: right;  margin-top: 0; margin-bottom: auto; }
+.row{ display: flex; margin-top: auto; margin-bottom: 0px;}
+button{text-decoration-line: none;}
+a{text-decoration-line: none;}
+#socials{display: inline; max-width: 40px; background-color: lightgray;
+    margin-left: 0px;margin-right: auto;}
