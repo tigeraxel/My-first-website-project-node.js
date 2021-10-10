@@ -1,9 +1,33 @@
-<!DOCTYPE html>
 <html>
-
-
-
-
-<p>hello this isgastbok </p>
+<header class="titel2">Gästbok</header>
 
 </html>
+
+{{#if hasDatabaseError}}
+<p>Gästbok hittades ej</p>
+
+{{else }}
+
+{{#each resultKommentar}}
+<ul>
+    <tag class="kommentarenhet">
+        <p class="GästbokNamn">{{namn}}:</p>
+        <p class="GästbokKommentar">{{kommentar}}</p>
+        
+    </tag>
+    <p>skickat {{datum}}</p>
+</ul>
+
+{{/each}}
+{{/if}}
+
+<div class="kommentarform">
+    <form id="commentinput" method="POST" action="/gastbok">
+
+        <label for="Namn">Namn:</label><br>
+        <input type="text" id="Namn" name="Namn"><br>
+        <label for="Kommentar">Kommentar:</label><br>
+        <textarea rows = "5" cols = "60" name = "Kommentar" id="Kommentar"></textarea>
+        <input type="submit" value="Publicera">
+    </form>
+</div>

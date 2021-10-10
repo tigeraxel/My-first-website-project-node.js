@@ -1,0 +1,27 @@
+<title>Blogg </title>
+
+<header class="titel2">Blogginlägg </header> 
+{{#if session.isLoggedIn}}
+<a id="createblogbutton" href="/createBlogPost"><button class="btn btn-primary">Skapa inlägg</button></a>
+{{/if}}
+
+
+{{#if hasDatabaseError}}
+<p>Blogginlägg hittades ej</p>
+
+{{else }}
+
+{{#each resultBlog}}
+<ul class="blogginlägg">
+        <a href="Blog/{{postID}}"><p class="GästbokNamn">{{blogtitel}}:</p> </a><br>
+        <p class="bloggTextLIM">{{blogtext}}</p>
+        <p>publicerat {{datum}} utav {{blogförfattare}} </p>
+</ul>
+
+{{/each}}
+{{/if}}
+
+
+
+
+

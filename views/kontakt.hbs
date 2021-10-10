@@ -1,0 +1,40 @@
+<title>Kontakt </title>
+
+<header class="titel2"> Kontakt</header>
+{{#if session.isLoggedIn}}
+{{#if hasDatabaseError }}
+<p>Kontaktanmälningar hittades ej</p>
+{{else}}
+
+{{#each resultKontakt}}
+<ul >
+    <p class="kontaktenhet">
+        <p class="GästbokNamn">{{namn}}, {{nummer}}, {{email}}:</p><br>
+        <p class="GästbokKommentar">{{meddelande}}</p>
+        <p class="skickat">skickat {{datum}}</p></p>
+
+{{/each}}
+{{/if}}
+
+
+
+{{else}}
+
+<div class="kommentarform">
+    <form id="Kontaktinput" method="POST" action="/kontakt">
+
+        <label for="Namn">Namn:</label><br>
+        <input type="text" id="Namn" name="Namn"><br>
+        
+        <label for="Nummer">Nummer:</label><br>
+        <input type="text" id="Nummer" name="Nummer"><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <label for="Meddelande">Meddelande:</label><br>
+        <textarea rows = "5" cols = "60" name = "Meddelande" id="Meddelande"></textarea>
+        <input type="submit" value="Skicka">
+    </form>
+</div>
+
+{{/if}}
+

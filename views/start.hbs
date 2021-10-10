@@ -1,5 +1,3 @@
-
-
 <div class="row2">
     <span class="col1">
         <menu class="socials">
@@ -57,20 +55,34 @@
     </span>
 
     <span class="col3">
-               <textarea name="oldcomments" id="oldcomments" cols="30" rows="10">Anders: axel du är bäst på att koda   
- Lovisa: Axel kan räkna 5ans gångertabell flytnde! </textarea>
-        <form id="commentinput">
- 
-            <label for="Namn">Namn:</label><br>
-            <input type="text" id="Namn" name="Namn"><br>
-            <label for="Kommentar">Kommentar:</label><br>
-            <input type="text" id="Kommentar" name="Kommentar">
-            <input type="submit" value="Publicera" >
-          </form>
-    
+        <header class="titel2">Senaste Gästboksinläggen</header>
+
+{{#if hasDatabaseError}}
+<p>Gästbok hittades ej</p>
+
+{{else }}
+
+{{#each resultKommentar}}
+<ul>
+    <tag class="kommentarenhetstartsida">
+        <p class="GästbokNamn2">{{namn}}:</p>
+        <p class="GästbokKommentar">{{kommentar}}</p>
+    </tag>
+</ul>
+
+{{/each}}
+{{/if}}
+    <form id="submitStartsida" method="POST" action="/start">
+        <label for="Namn">Namn:</label><br>
+        <input type="text" id="Namnstart" name="Namnstart"><br>
+        <label for="Kommentarstart">Kommentar:</label><br>
+        <tag id="kommentarform"><textarea rows="5" cols="35" name="Kommentarstart" id="Kommentarstart"></textarea></tag>
+        <input type="submit" value="Publicera">
+        </form>
+
     </span>
 
-    
+
 
 
 </div>

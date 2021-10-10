@@ -1,9 +1,13 @@
-<!DOCTYPE html>
-<html>
+<title>om mig </title>
 
+<header class="titel2"> Om mig</header>
 
+{{#if hasDatabaseError}}
+<p>Kontakter hittades ej</p>
 
+{{else }}
 
-<p>hello this is <main></main></p>
-
-</html>
+{{#each resultKontakt}}
+<p class="Kontakt"> {{namn}}: {{arbetsroll}}: {{nummer}} </p>
+{{/each}}
+{{/if}}
