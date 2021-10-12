@@ -1,13 +1,25 @@
-<html>
 <header class="titel2">Gästbok</header>
 
-</html>
+{{#if session.isLoggedIn}}
+
+{{else}}
+<div class="kommentarform">
+    <form id="commentinput" method="POST" action="/gastbok">
+
+        <label for="Namn">Namn:</label><br>
+        <input type="text" id="Namn" name="Namn"><br>
+        <label for="Kommentar">Kommentar:</label><br>
+        <textarea rows = "5" cols = "60" name = "Kommentar" id="Kommentar"></textarea>
+        <input type="submit" value="Publicera">
+    </form>
+</div>
+{{/if}}
+
 
 {{#if hasDatabaseError}}
 <p>Gästbok hittades ej</p>
 
 {{else }}
-
 {{#each resultKommentar}}
 <ul>
     <tag class="kommentarenhet">
@@ -21,13 +33,4 @@
 {{/each}}
 {{/if}}
 
-<div class="kommentarform">
-    <form id="commentinput" method="POST" action="/gastbok">
 
-        <label for="Namn">Namn:</label><br>
-        <input type="text" id="Namn" name="Namn"><br>
-        <label for="Kommentar">Kommentar:</label><br>
-        <textarea rows = "5" cols = "60" name = "Kommentar" id="Kommentar"></textarea>
-        <input type="submit" value="Publicera">
-    </form>
-</div>

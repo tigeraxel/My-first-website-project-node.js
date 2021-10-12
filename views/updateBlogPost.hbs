@@ -1,0 +1,34 @@
+<title>Blogg </title>
+
+
+{{#if errors}}
+<h2 class="titel2">Kunde inte laddas upp pga fel</h2>
+{{#each errors}}
+<ul>
+    <li>{{this}} </li>
+</ul>
+ 
+{{/each}}
+{{/if}}
+
+
+
+
+
+{{#each resultBlogpost}}
+<div class="Bloggform">
+    <form id="blogginput" method="POST" action="/blog/{{postID}}/update">
+
+        <label for="blogförfattare">Skribent:</label><br>
+        <textarea rows = "1" cols = "20" name = "blogförfattare" id="blogförfattare" >{{blogförfattare}}</textarea>  <br>
+
+        <label for="Titel">Titel:</label><br>
+        <textarea rows = "1" cols = "40" name = "blogtitel" id="blogtitel">{{blogtitel}}</textarea>  <br>
+
+        <label for="Meddelande">Text:</label><br>
+        <textarea rows = "12" cols = "90" name = "blogtext" id="blogtext">{{blogtext}}</textarea>
+        <input type="submit" value="Publicera">
+    </form>
+</div>
+{{/each}}
+

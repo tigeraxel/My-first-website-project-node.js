@@ -1,16 +1,33 @@
 <title>Blogginlägg </title>
-
-
-
-
+{{#if session.isLoggedIn}}
 {{#each resultBlogpost}}
+
 <div class="bloggsida">
         <header class="titel2"> {{bloggtitel}} </header>
 
         <p class="GästbokNamn">{{blogtitel}}:</p>
         </a><br>
         <p class="bloggText">{{blogtext}}</p>
-        <p>Publicerat {{datum}} utav {{blogförfattare}} </p>
+        <p>Publicerat {{datum}} utav {{blogförfattare}}         
+       <a id="updatebutton" href="/Blog/{{postID}}/update"><button class="btn btn-primary">
+               uppdatera</button></a>
+        <a id="deletebutton" href="/Blog/{{postID}}/delete"><button class="btn btn-primary">
+                ta bort</button></a>
 </div>
 
 {{/each}}
+{{else}}
+
+{{#each resultBlogpost}}
+
+<div class="bloggsida">
+        <header class="titel2"> {{bloggtitel}} </header>
+
+        <p class="GästbokNamn">{{blogtitel}}:</p>
+        </a><br>
+        <p class="bloggText">{{blogtext}}</p>
+        <p>Publicerat {{datum}} utav {{blogförfattare}}  
+
+{{/each}}
+
+{{/if}}
