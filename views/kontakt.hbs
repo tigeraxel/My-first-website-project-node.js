@@ -6,12 +6,21 @@
 <p>Kontaktanmälningar hittades ej</p>
 {{else}}
 
+<p class="leftmargin"> För att kontakta mig så fyll helst i formuläret nedan. <br>
+Enbart akuta ärenden nås jag på 070123456789. ring inte efter 19.00 </p>
+
 {{#each resultKontakt}}
 <ul >
     <p class="kontaktenhet">
         <p class="GästbokNamn">{{namn}}, {{nummer}}, {{email}}:</p><br>
         <p class="GästbokKommentar">{{meddelande}}</p>
-        <p class="skickat">skickat {{datum}}</p></p>
+        <p class="skickat">skickat {{datum}}<span>
+        <a href="/kontakt/{{ID}}/update"><button class="btn">uppdatera</button></a>
+        <a href="/kontakt/{{ID}}/delete"><button class="btn">ta bort</button></a> </span></p>
+        
+        </p>
+        
+        
 
 {{/each}}
 {{/if}}

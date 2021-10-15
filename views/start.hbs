@@ -62,17 +62,17 @@
 
 {{else }}
 
-{{#each resultKommentar}}
+{{#each resultGästbok}}
 <ul>
     <tag class="kommentarenhetstartsida">
         <p class="GästbokNamn2">{{namn}}:</p>
-        <p class="GästbokKommentar">{{kommentar}}</p>
+        <p class="GästbokKommentar">{{text}}</p>
     </tag>
 </ul>
 
 {{/each}}
 {{/if}}
-    <form id="submitStartsida" method="POST" action="/start">
+    <form id="submitStartsida" method="POST" action="/">
         <label for="Namn">Namn:</label><br>
         <input type="text" id="Namnstart" name="Namnstart"><br>
         <label for="Kommentarstart">Kommentar:</label><br>

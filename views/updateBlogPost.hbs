@@ -1,34 +1,55 @@
 <title>Blogg </title>
 
 
-{{#if errors}}
+{{#if errors.length}}
 <h2 class="titel2">Kunde inte laddas upp pga fel</h2>
 {{#each errors}}
 <ul>
     <li>{{this}} </li>
 </ul>
- 
+
 {{/each}}
-{{/if}}
+
+<div class="Bloggform">
+    <form id="blogginput" method="POST" action="/Blog/{{resultBlogpost.postID}}/update">
 
 
+        <label for="blogförfattare">Skribent:</label><br>
+        <textarea rows="1" cols="20" name="blogförfattare"
+            id="blogförfattare">{{resultBlogpost.blogförfattare}}</textarea> <br>
+
+        <label for="Titel">Titel:</label><br>
+        <textarea rows="1" cols="40" name="blogtitel" id="blogtitel">{{resultBlogpost.blogtitel}}</textarea> <br>
+
+        <label for="Meddelande">Text:</label><br>
+        <textarea rows="12" cols="90" name="blogtext" id="blogtext">{{resultBlogpost.blogtext}}</textarea>
+        <button class="btn" type="submit">Publicera!</button>
+    </form>
+</div>
+
+
+
+{{else}}
 
 
 
 {{#each resultBlogpost}}
 <div class="Bloggform">
-    <form id="blogginput" method="POST" action="/blog/{{postID}}/update">
+    <form id="blogginput" method="POST" action="/Blog/{{postID}}/update">
+
 
         <label for="blogförfattare">Skribent:</label><br>
-        <textarea rows = "1" cols = "20" name = "blogförfattare" id="blogförfattare" >{{blogförfattare}}</textarea>  <br>
+        <textarea rows="1" cols="20" name="blogförfattare"
+            id="blogförfattare">{{blogförfattare}}</textarea> <br>
 
         <label for="Titel">Titel:</label><br>
-        <textarea rows = "1" cols = "40" name = "blogtitel" id="blogtitel">{{blogtitel}}</textarea>  <br>
+        <textarea rows="1" cols="40" name="blogtitel" id="blogtitel">{{blogtitel}}</textarea> <br>
 
         <label for="Meddelande">Text:</label><br>
-        <textarea rows = "12" cols = "90" name = "blogtext" id="blogtext">{{blogtext}}</textarea>
-        <input type="submit" value="Publicera">
+        <textarea rows="12" cols="90" name="blogtext" id="blogtext">{{blogtext}}</textarea>
+        <button class="btn" type="submit">Publicera!</button>
     </form>
 </div>
 {{/each}}
 
+{{/if}}

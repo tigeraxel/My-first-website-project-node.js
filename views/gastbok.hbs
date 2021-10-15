@@ -8,8 +8,8 @@
 
         <label for="Namn">Namn:</label><br>
         <input type="text" id="Namn" name="Namn"><br>
-        <label for="Kommentar">Kommentar:</label><br>
-        <textarea rows = "5" cols = "60" name = "Kommentar" id="Kommentar"></textarea>
+        <label for="text">text:</label><br>
+        <textarea rows = "5" cols = "60" name = "text" id="text"></textarea>
         <input type="submit" value="Publicera">
     </form>
 </div>
@@ -20,14 +20,17 @@
 <p>Gästbok hittades ej</p>
 
 {{else }}
-{{#each resultKommentar}}
+{{#each resultGastbok}}
 <ul>
     <tag class="kommentarenhet">
         <p class="GästbokNamn">{{namn}}:</p>
-        <p class="GästbokKommentar">{{kommentar}}</p>
-        
+        <p class="Gästbokkommentar">{{text}}</p>
     </tag>
-    <p>skickat {{datum}}</p>
+    <p>skickat {{datum}} <span><br><a href="/gastbok/{{ID}}/update">
+    <button class="btn">uppdatera</button></a>
+        <a  href="/gastbok/{{ID}}/delete">
+        <button class="btn">ta bort</button></a> </span></p>
+
 </ul>
 
 {{/each}}

@@ -17,17 +17,17 @@
 
 
 <div class="Bloggform">
-    <form id="blogginput" method="POST" action="/createBlogPost">
+    <form id="blogginput" method="POST" action="/Blog/createBlogPost">
 
         <label for="blogförfattare">Skribent:</label><br>
-        <textarea rows = "1" cols = "20" name = "blogförfattare" id="blogförfattare"></textarea>  <br>
+        <textarea rows = "1" cols = "20" name = "blogförfattare" id="blogförfattare">{{resultBlogpost.blogförfattare}}</textarea>  <br>
 
         <label for="Titel">Titel:</label><br>
-        <textarea rows = "1" cols = "40" name = "blogtitel" id="blogtitel"></textarea>  <br>
+        <textarea rows = "1" cols = "40" name = "blogtitel" id="blogtitel">{{resultBlogpost.blogtitel}}</textarea>  <br>
 
         <label for="Meddelande">Text:</label><br>
-        <textarea rows = "12" cols = "90" name = "blogtext" id="blogtext"></textarea>
-        <input type="submit" value="Publicera">
+        <textarea rows = "12" cols = "90" name = "blogtext" id="blogtext">{{resultBlogpost.blogtext}}</textarea>
+        <button class="btn" type="submit" >Publicera!</button>
     </form>
 </div>
 

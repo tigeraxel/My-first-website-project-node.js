@@ -62,3 +62,5 @@ margin-left: 30px;}
   .bloggknappar{margin-bottom: 30px; margin-top: 0px;margin-left: 30px;}
   .bolditalic{font-weight: bold;font-style: italic;}
   .leftmargin{margin-left: 30px;}
+  .leftmargininline{margin-left: 30px; display: inline-block;}
+  .gastbokknapp{border-radius: 1px;padding: 1px;}

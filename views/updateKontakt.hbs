@@ -1,0 +1,53 @@
+<title>Gastbok </title>
+
+
+{{#if errors.length}}
+<h2 class="titel2">Kunde inte laddas upp pga fel</h2>
+{{#each errors}}
+<ul>
+    <li>{{this}} </li>
+</ul>
+
+{{/each}}
+<div class="Bloggform">
+    <div class="kommentarform">
+        <form id="Kontaktupdate" method="POST" action="/kontakt/{{resultKontakt.ID}}/update">
+
+            <label for="Namn">Namn:</label><br>
+            <textarea name="namn" id="namn" cols="30" rows="1">{{resultKontakt.namn}}</textarea><br>
+            <label for="Nummer">Nummer:</label><br>
+            <textarea name="nummer" id="nummer" cols="30" rows="1">{{resultKontakt.nummer}}</textarea><br>
+            <label for="email">Email:</label><br>
+            <textarea name="email" id="email" cols="30" rows="1">{{resultKontakt.email}}</textarea><br>
+            <label for="Meddelande">Meddelande:</label><br>
+            <textarea rows="5" cols="60" name="Meddelande" id="Meddelande">{{resultKontakt.meddelande}}</textarea>
+            <button class="btn" type="submit" value="Uppdatera"> Uppdatera</button>
+
+        </form>
+    </div>
+</div>
+
+{{else}}
+
+
+{{#each resultKontakt}}
+<div class="Bloggform">
+    <div class="kommentarform">
+        <form id="Kontaktupdate" method="POST" action="/kontakt/{{ID}}/update">
+
+            <label for="Namn">Namn:</label><br>
+            <textarea name="namn" id="namn" cols="30" rows="1">{{namn}}</textarea><br>
+            <label for="Nummer">Nummer:</label><br>
+            <textarea name="nummer" id="nummer" cols="30" rows="1">{{nummer}}</textarea><br>
+            <label for="email">Email:</label><br>
+            <textarea name="email" id="email" cols="30" rows="1">{{email}}</textarea><br>
+            <label for="Meddelande">Meddelande:</label><br>
+            <textarea rows="5" cols="60" name="Meddelande" id="Meddelande">{{meddelande}}</textarea>
+            <button class="btn" type="submit" value="Uppdatera"> Uppdatera</button>
+
+        </form>
+    </div>
+</div>
+{{/each}}
+
+{{/if}}

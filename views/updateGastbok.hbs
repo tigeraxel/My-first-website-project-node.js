@@ -1,0 +1,44 @@
+<title>Gastbok </title>
+
+
+{{#if errors.length}}
+<h2 class="titel2">Kunde inte laddas upp pga fel</h2>
+{{#each errors}}
+<ul>
+    <li>{{this}} </li>
+</ul>
+ 
+{{/each}}
+
+<div class="Bloggform">
+    <form id="blogginput" method="POST" action="/Gastbok/{{resultGastbok.ID}}/update">
+
+        <label for="namn">Namn:</label><br>
+        <textarea rows = "1" cols = "20" name = "namn" id="namn" >{{resultGastbok.namn}}</textarea>  <br>
+
+        <label for="Titel">Text:</label><br>
+        <textarea rows = "5" cols = "60" name = "text" id="text">{{resultGastbok.text}}</textarea>  <br>
+        <button class="btn" type="submit" >Ja, uppdatera!</button>
+    </form>
+</div>
+
+
+{{else}}
+
+
+
+{{#each resultGastbok}}
+<div class="Bloggform">
+    <form id="blogginput" method="POST" action="/Gastbok/{{ID}}/update">
+
+        <label for="namn">Namn:</label><br>
+        <textarea rows = "1" cols = "20" name = "namn" id="namn" >{{namn}}</textarea>  <br>
+
+        <label for="Titel">Text:</label><br>
+        <textarea rows = "5" cols = "60" name = "text" id="text">{{text}}</textarea>  <br>
+        <button class="btn" type="submit" >Ja, uppdatera!</button>
+    </form>
+</div>
+{{/each}}
+
+{{/if}}
