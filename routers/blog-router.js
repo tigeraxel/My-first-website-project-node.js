@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
                 resultBlog
             }
             console.log(model.resultBlog)
-            res.render("Blog.hbs", model)
+            res.render("blog.hbs", model)
         }
     })
 })
