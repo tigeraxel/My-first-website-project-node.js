@@ -13,6 +13,7 @@ router.get('/', (req, res) => {
             const model = {
                 hasDatabaseError: true,
                 resultBlog: [],
+                
 
             }
             res.render("blog.hbs", model)
@@ -83,6 +84,14 @@ router.post('/createBlogPost', csrfProtection, function (request, response) {
             if (error) {
                 hasDatabaseError: true
                 console.log("error insert blog");
+                errors.push("internt databas fel")
+                const model = {
+                    errors,
+                    csrfToken: request.csrfToken()
+                    
+                    }
+                    
+                response.render("createBlogPost.hbs", model)
             }
             else {
 
@@ -114,12 +123,21 @@ router.get('/:id', function (request, response) {
 
     const query = "SELECT * FROM blog WHERE postID = ? LIMIT 1"
     const id = request.params.id
+    var errors = []
 
     db.all(query, id, function (error, resultBlogpost) {
         if (error) {
             // TODO: Handle error.
             console.log("Error")
             console.log(id)
+            errors.push("internt databas fel")
+            const model = {
+                errors,
+                csrfToken: request.csrfToken()
+                
+                }
+                
+            response.render("blogpost.hbs", model)
 
         }
         else {
@@ -139,13 +157,21 @@ router.get('/:id/update',csrfProtection, function (request, response) {
 
     const id = request.params.id
     const query = "SELECT * FROM blog WHERE postID = ? "
-
+    var errors=[]
 
     db.get(query, id, function (error, resultBlogpost) {
         if (error) {
             // TODO: Handle error.
             console.log("Error")
             console.log(id)
+            errors.push("internt databas fel")
+            const model = {
+                errors,
+                csrfToken: request.csrfToken()
+                
+                }
+                
+            response.render("updateBlogPost.hbs", model)
 
         }
         else {

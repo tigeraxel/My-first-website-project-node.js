@@ -11,9 +11,9 @@ var csrfProtection = csrf({ cookie: true })
 //const mainApp = require("../app")
 
 
-router.get('/',csrfProtection, (req, res) => {
+router.get('/', csrfProtection, (req, res) => {
     const namn = "Axel"
-    const query = "SELECT * FROM kontakt"
+    const query = "SELECT * FROM kontakt ORDER BY datum DESC"
     db.all(query, function (error, resultKontakt) {
         if (error) {
             const model = {
@@ -35,7 +35,7 @@ router.get('/',csrfProtection, (req, res) => {
     })
 })
 
-router.post('/',csrfProtection, function (request, response) {
+router.post('/', csrfProtection, function (request, response) {
     console.log(request.body);
     const namn = request.body.Namn;
     const nummer = request.body.Nummer;
@@ -43,7 +43,7 @@ router.post('/',csrfProtection, function (request, response) {
     const meddelande = request.body.Meddelande;
     var datum = new Date();
     datum = datum.toLocaleString();
-    
+
 
     const min_namn_längd = 2;
     const min_text_längd = 10;
@@ -87,6 +87,18 @@ router.post('/',csrfProtection, function (request, response) {
                 hasDatabaseError: true
                 console.log(values)
                 console.log("error insert kontakt");
+                errors.push("internt databas fel")
+                const model = {
+                    errors,
+                    resultKontakt: {
+                        namn,
+                        nummer,
+                        email,
+                        meddelande
+                    }
+                    , csrfToken: request.csrfToken()
+                }
+                response.render("kontakt.hbs", model)
             }
             else {
 
@@ -104,7 +116,7 @@ router.post('/',csrfProtection, function (request, response) {
                 email,
                 meddelande
             }
-            ,csrfToken: request.csrfToken()
+            , csrfToken: request.csrfToken()
 
         }
         response.render("kontakt.hbs", model)
@@ -113,17 +125,30 @@ router.post('/',csrfProtection, function (request, response) {
 })
 
 
-router.get('/:id/update',csrfProtection, function (request, response) {
+router.get('/:id/update', csrfProtection, function (request, response) {
 
     const id = request.params.id
     const query = "SELECT * FROM kontakt WHERE ID = ? "
-
+    var errors = []
 
     db.get(query, id, function (error, resultKontakt) {
         if (error) {
             // TODO: Handle error.
             console.log("Error")
             console.log(id)
+            errors.push("internt databas fel")
+            const model = {
+                errors,
+                resultKontakt: {
+                    namn,
+                    nummer,
+                    email,
+                    meddelande
+                }
+                , csrfToken: request.csrfToken()
+            }
+            response.render("updateKontakt.hbs", model)
+
 
         }
         else {
@@ -141,7 +166,7 @@ router.get('/:id/update',csrfProtection, function (request, response) {
 })
 
 
-router.post('/:id/update',csrfProtection, function (request, response) {
+router.post('/:id/update', csrfProtection, function (request, response) {
     console.log(request.body);
 
     const namn = request.body.namn;
@@ -183,6 +208,18 @@ router.post('/:id/update',csrfProtection, function (request, response) {
             if (error) {
                 hasDatabaseError: true
                 console.log("error UPDATE Kontakt");
+                errors.push("internt databas fel")
+                const model = {
+                    errors,
+                    resultKontakt: {
+                        namn,
+                        nummer,
+                        email,
+                        meddelande
+                    }
+                    , csrfToken: request.csrfToken()
+                }
+                response.render("updateKontakt.hbs", model)
             }
             else {
 
@@ -209,57 +246,80 @@ router.post('/:id/update',csrfProtection, function (request, response) {
 })
 
 
-router.get('/:id/delete',csrfProtection, function (request, response) {
+router.get('/:id/delete', csrfProtection, function (request, response) {
 
     const id = request.params.id
     const query = "SELECT * FROM kontakt WHERE ID = ? "
     const errors = []
 
-        db.get(query, id, function (error, resultKontakt) {
-            if (error) {
-                // TODO: Handle error.
-                console.log("Error")
-                console.log(id)
-
-            }
-            else {
-                const model = {
-                    resultKontakt,
-                    csrfToken: request.csrfToken()
+    db.get(query, id, function (error, resultKontakt) {
+        if (error) {
+            // TODO: Handle error.
+            console.log("Error")
+            console.log(id)
+            errors.push("internt databas fel")
+            const model = {
+                errors,
+                resultKontakt: {
+                    namn,
+                    nummer,
+                    email,
+                    meddelande
                 }
-                console.log(query)
-                console.log(id)
-                response.render('deleteKontakt.hbs', model)
-
+                , csrfToken: request.csrfToken()
             }
-        })
+            response.render("deleteKontakt.hbs", model)
+
+        }
+        else {
+            const model = {
+                resultKontakt,
+                csrfToken: request.csrfToken()
+            }
+            console.log(query)
+            console.log(id)
+            response.render('deleteKontakt.hbs', model)
+
+        }
+    })
 
 })
 
 
-router.post('/:id/delete',csrfProtection, function (request, response) {
+router.post('/:id/delete', csrfProtection, function (request, response) {
 
     const id = request.params.id
     const query = "DELETE FROM kontakt WHERE ID = ?"
     console.log("försöker ta bort kontakt")
-    const errors= []
+    const errors = []
     if (!request.session.isLoggedIn) {
         errors.push("Inte inloggad.")
     }
 
     if (errors == 0)
-    db.all(query, id, function (error) {
-        if (error) {
-            // TODO: Handle error.
-            console.log("Error")
-            console.log(id)
+        db.all(query, id, function (error) {
+            if (error) {
+                // TODO: Handle error.
+                console.log("Error")
+                console.log(id)
+                errors.push("internt databas fel")
+                const model = {
+                    errors,
+                    resultKontakt: {
+                        namn,
+                        nummer,
+                        email,
+                        meddelande
+                    }
+                    , csrfToken: request.csrfToken()
+                }
+                response.render("deleteKontakt.hbs", model)
+            }
+            else {
+                response.redirect('/kontakt')
 
-        }
-        else {
-            response.redirect('/kontakt')
-
-        }
-    })
+            }
+        })
     else {
         const model = {
             errors,

@@ -20,6 +20,16 @@
 <p>Kontaktanmälningar hittades ej</p>
 {{else}}
 
+{{#if errors}}
+<h2 class="titel2">Kunde inte laddas upp pga fel</h2>
+{{#each errors}}
+<ul>
+    <li>{{this}} </li>
+</ul>
+ 
+{{/each}}
+{{/if}}
+
 {{#each resultKontakt}}
 <div class="leftmargin">
     <table>

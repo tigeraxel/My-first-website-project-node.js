@@ -71,6 +71,14 @@ router.get('/',csrfProtection, (req, res) => {
             if (error) {
                 hasDatabaseError: true
                 console.log("error insert gästbok");
+                errors.push("internt databas fel")
+                const model = {
+                errors,
+                csrfToken: request.csrfToken()
+                
+                }
+                
+            response.render("gastbok.hbs", model)
             }
             else {
 
@@ -107,6 +115,14 @@ router.get('/',csrfProtection, (req, res) => {
             // TODO: Handle error.
             console.log("Error")
             console.log(id)
+            errors.push("internt databas fel")
+            const model = {
+                errors,
+                csrfToken: request.csrfToken()
+                
+                }
+                
+            response.render("deletegastbok.hbs", model)
 
         }
         else {
@@ -130,12 +146,20 @@ router.get('/:id/update',csrfProtection, function (request, response) {
     const id = request.params.id
     const query = "SELECT * FROM gästbok WHERE ID = ? "
 
-
+    var errors=[]
     db.get(query, id, function (error, resultGastbok) {
         if (error) {
             // TODO: Handle error.
             console.log("Error")
             console.log(id)
+            errors.push("internt databas fel")
+            const model = {
+                errors,
+                csrfToken: request.csrfToken()
+                
+                }
+                
+            response.render("updategastbok.hbs", model)
 
         }
         else {
@@ -193,6 +217,15 @@ router.post('/:id/update',csrfProtection, function (request, response) {
             if (error) {
                 hasDatabaseError: true
                 console.log("error UPDATE gästbokinlägg");
+                errors.push("internt databas fel")
+                const model = {
+                errors,
+                csrfToken: request.csrfToken()
+                
+                }
+                
+            response.render("updategastbok.hbs", model)
+                
             }
             else {
 
@@ -234,6 +267,14 @@ router.post('/:id/delete',csrfProtection, function (request, response) {
             // TODO: Handle error.
             console.log("Error")
             console.log(id)
+            errors.push("internt databas fel")
+            const model = {
+                errors,
+                csrfToken: request.csrfToken()
+                
+                }
+                
+            response.render("deletegastbok.hbs", model)
 
         }
         else {
