@@ -1,26 +1,41 @@
 <title>Kontakt </title>
 
 <header class="titel2"> Kontakt</header>
+
+
+{{#if errors}}
+<h4 class="titel2"> <br> Kunde inte laddas upp pga fel</h4>
+{{#each errors}}
+<ul>
+    <li>{{this}} </li>
+</ul>
+
+{{/each}}
+{{/if}}
+
 {{#if session.isLoggedIn}}
+
+
 {{#if hasDatabaseError }}
 <p>Kontaktanmälningar hittades ej</p>
 {{else}}
 
-<p class="leftmargin"> För att kontakta mig så fyll helst i formuläret nedan. <br>
-Enbart akuta ärenden nås jag på 070123456789. ring inte efter 19.00 </p>
-
 {{#each resultKontakt}}
-<ul >
-    <p class="kontaktenhet">
+<div class="leftmargin">
+    <table>
+
+        <p class="kontaktenhet">
         <p class="GästbokNamn">{{namn}}, {{nummer}}, {{email}}:</p><br>
         <p class="GästbokKommentar">{{meddelande}}</p>
         <p class="skickat">skickat {{datum}}<span>
-        <a href="/kontakt/{{ID}}/update"><button class="btn">uppdatera</button></a>
-        <a href="/kontakt/{{ID}}/delete"><button class="btn">ta bort</button></a> </span></p>
-        
+                <a href="/kontakt/{{ID}}/update"><button class="btn">uppdatera</button></a>
+                <a href="/kontakt/{{ID}}/delete"><button class="btn">ta bort</button></a> </span>
         </p>
-        
-        
+
+
+    </table>
+</div>
+
 
 {{/each}}
 {{/if}}
@@ -29,21 +44,24 @@ Enbart akuta ärenden nås jag på 070123456789. ring inte efter 19.00 </p>
 
 {{else}}
 
+<p class="leftmargin"> För att kontakta mig så fyll helst i formuläret nedan. <br>
+    Enbart akuta ärenden nås jag på 070123456789. Ring aldrig efter 19.00! </p>
+
+
 <div class="kommentarform">
     <form id="Kontaktinput" method="POST" action="/kontakt">
-
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <label for="Namn">Namn:</label><br>
-        <input type="text" id="Namn" name="Namn"><br>
-        
+        <input type="text" id="Namn" name="Namn" value={{resultKontakt.namn}}><br>
+
         <label for="Nummer">Nummer:</label><br>
-        <input type="text" id="Nummer" name="Nummer"><br>
+        <input type="text" id="Nummer" name="Nummer" value={{resultKontakt.nummer}}><br>
         <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br>
+        <input type="email" id="email" name="email" value={{resultKontakt.email}}><br>
         <label for="Meddelande">Meddelande:</label><br>
-        <textarea rows = "5" cols = "60" name = "Meddelande" id="Meddelande"></textarea>
+        <textarea rows="5" cols="60" name="Meddelande" id="Meddelande">{{resultKontakt.meddelande}}</textarea>
         <input type="submit" value="Skicka">
     </form>
 </div>
 
 {{/if}}
-

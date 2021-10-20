@@ -1,7 +1,13 @@
 <!DOCTYPE html>
+<title>Logga in</title>
 <html>
+    {{#if Ogiltig}}
+    <P class="titel2">Ej giltig inloggning, försök igen!</P>
+
+    {{else}}
+    {{/if}}
 <div class="inlogginput">
-    <form id="InloggInput" method="POST" action="/loggain.hbs">
+    <form id="InloggInput" method="POST" action="/loggain">
         <label for="användarnamn">Användarnamn:</label><br>
         <input type="text" id="användarnamn" name="användarnamn"><br>
         <label for="Lösenord">Lösenord:</label><br>

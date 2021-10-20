@@ -1,15 +1,27 @@
+<title>Gästbok </title>
+
 <header class="titel2">Gästbok</header>
+
+{{#if errors}}
+<h4 class="titel2"> <br> Kunde inte laddas upp pga fel</h4>
+{{#each errors}}
+<ul>
+    <li>{{this}} </li>
+</ul>
+ 
+{{/each}}
+{{/if}}
 
 {{#if session.isLoggedIn}}
 
 {{else}}
 <div class="kommentarform">
     <form id="commentinput" method="POST" action="/gastbok">
-
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <label for="Namn">Namn:</label><br>
-        <input type="text" id="Namn" name="Namn"><br>
+        <input type="text" id="namn" name="namn" value={{resultGastbok.namn}}><br>
         <label for="text">text:</label><br>
-        <textarea rows = "5" cols = "60" name = "text" id="text"></textarea>
+        <textarea rows = "5" cols = "60" name = "text" id="text">{{resultGastbok.text}}</textarea>
         <input type="submit" value="Publicera">
     </form>
 </div>
@@ -20,10 +32,13 @@
 <p>Gästbok hittades ej</p>
 
 {{else }}
+{{#if errors}}
+{{else}}
+{{#if session.isLoggedIn}}
 {{#each resultGastbok}}
 <ul>
     <tag class="kommentarenhet">
-        <p class="GästbokNamn">{{namn}}:</p>
+        <p class="GästbokNamn">{{namn}}</p>
         <p class="Gästbokkommentar">{{text}}</p>
     </tag>
     <p>skickat {{datum}} <span><br><a href="/gastbok/{{ID}}/update">
@@ -34,6 +49,23 @@
 </ul>
 
 {{/each}}
+
+{{else}}
+{{#each resultGastbok}}
+<ul>
+    <tag class="kommentarenhet">
+        <p class="GästbokNamn">{{namn}}</p>
+        <p class="Gästbokkommentar">{{text}}</p>
+    </tag>
+    <p>skickat {{datum}}
+
+</ul>
+
+{{/each}}
+{{/if}}
+
+
+{{/if}}
 {{/if}}
 
 

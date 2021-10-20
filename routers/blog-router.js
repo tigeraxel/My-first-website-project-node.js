@@ -3,13 +3,17 @@ const router = express.Router();
 const sqlite = require('sqlite3');
 const db = new sqlite.Database('axeltigerberg.db')
 
+var csrf = require('csurf')
+var csrfProtection = csrf({ cookie: true })
+
 router.get('/', (req, res) => {
     const query = "SELECT * FROM blog ORDER BY datum DESC"
     db.all(query, function (error, resultBlog) {
         if (error) {
             const model = {
                 hasDatabaseError: true,
-                resultBlog: []
+                resultBlog: [],
+
             }
             res.render("blog.hbs", model)
         }
@@ -24,11 +28,14 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/createBlogPost', (req, res) => {
-    res.render("createBlogPost.hbs");
+router.get('/createBlogPost', csrfProtection, (req, res) => {
+    const model = {
+        csrfToken: req.csrfToken()
+    }
+    res.render("createBlogPost.hbs", model);
 })
 
-router.post('/createBlogPost', function (request, response) {
+router.post('/createBlogPost', csrfProtection, function (request, response) {
     console.log(request.body);
     const blogförfattare = request.body.blogförfattare;
     const blogtitel = request.body.blogtitel;
@@ -45,7 +52,7 @@ router.post('/createBlogPost', function (request, response) {
     const errors = []
 
     if (!request.session.isLoggedIn) {
-        errors.push("Not logged in.")
+        errors.push("Inte inloggad.")
     }
 
     if (!blogförfattare) {
@@ -65,7 +72,7 @@ router.post('/createBlogPost', function (request, response) {
     if (!blogtext) {
         errors.push("Det saknas en blogtext.")
     }
-    else if (blogtitel.length < min_text_längd) {
+    else if (blogtext.length < min_text_längd) {
         errors.push("Din text måste vara minst" + min_text_längd + " tecken.")
     }
     console.log(errors)
@@ -90,14 +97,16 @@ router.post('/createBlogPost', function (request, response) {
             resultBlogpost: {
                 blogförfattare,
                 blogtitel,
-                blogtext,
+                blogtext
+            },
+            csrfToken: request.csrfToken()
 
-            }
         }
         response.render("createBlogPost.hbs", model)
     }
 
-})
+}
+)
 
 
 router.get('/:id', function (request, response) {
@@ -126,13 +135,13 @@ router.get('/:id', function (request, response) {
 
 })
 
-router.get('/:id/update', function (request, response) {
+router.get('/:id/update',csrfProtection, function (request, response) {
 
     const id = request.params.id
     const query = "SELECT * FROM blog WHERE postID = ? "
 
 
-    db.all(query, id, function (error, resultBlogpost) {
+    db.get(query, id, function (error, resultBlogpost) {
         if (error) {
             // TODO: Handle error.
             console.log("Error")
@@ -141,7 +150,8 @@ router.get('/:id/update', function (request, response) {
         }
         else {
             const model = {
-                resultBlogpost
+                resultBlogpost,
+                csrfToken : request.csrfToken()
             }
             console.log(query)
             console.log(id)
@@ -153,7 +163,7 @@ router.get('/:id/update', function (request, response) {
 })
 
 
-router.post('/:id/update', function (request, response) {
+router.post('/:id/update',csrfProtection, function (request, response) {
     console.log(request.body);
     const blogförfattare = request.body.blogförfattare;
     const blogtitel = request.body.blogtitel;
@@ -173,7 +183,7 @@ router.post('/:id/update', function (request, response) {
     const errors = []
 
     if (!request.session.isLoggedIn) {
-        errors.push("Not logged in.")
+        errors.push("Inte inloggad.")
     }
 
     if (!blogförfattare) {
@@ -220,8 +230,8 @@ router.post('/:id/update', function (request, response) {
                 blogtitel,
                 blogtext,
                 postID
-
-            }
+            },
+            csrfToken: request.csrfToken()
         }
         response.render("updateBlogPost.hbs", model)
     }
@@ -229,7 +239,7 @@ router.post('/:id/update', function (request, response) {
 })
 
 
-router.get('/:id/delete', function (request, response) {
+router.get('/:id/delete',csrfProtection, function (request, response) {
 
     const id = request.params.id
     const query = "SELECT * FROM blog WHERE postID = ? "
@@ -244,7 +254,8 @@ router.get('/:id/delete', function (request, response) {
         }
         else {
             const model = {
-                resultBlogpost
+                resultBlogpost,
+                csrfToken : request.csrfToken()
             }
             console.log(query)
             console.log(id)
@@ -255,24 +266,40 @@ router.get('/:id/delete', function (request, response) {
 
 })
 
-router.post('/:id/delete', function (request, response) {
+router.post('/:id/delete',csrfProtection, function (request, response) {
 
     const id = request.params.id
     const query = "DELETE FROM blog WHERE postID = ?"
     console.log("försöker ta bort")
+    const errors = []
 
-    db.all(query, id, function (error) {
-        if (error) {
-            // TODO: Handle error.
-            console.log("Error")
-            console.log(id)
+    if (!request.session.isLoggedIn) {
+        errors.push("Inte inloggad.")
+    }
 
+    if (errors == 0)
+        db.all(query, id, function (error) {
+            if (error) {
+                // TODO: Handle error.
+                console.log("Error")
+                console.log(id)
+
+            }
+            else {
+                response.redirect('/')
+
+            }
+        })
+    else {
+        const model = {
+            errors,
+            csrfToken : request.csrfToken()
         }
-        else {
-            response.redirect('/')
+        console.log(query)
+        console.log(id)
+        response.render('deleteBlogPost.hbs', model)
 
-        }
-    })
+    }
 
 })
 

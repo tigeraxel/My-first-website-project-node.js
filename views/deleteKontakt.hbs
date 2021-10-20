@@ -1,10 +1,20 @@
 <div class="leftmargin">
-{{#each resultGästbok}}
-<h1 class="titel2">Ta bort gästbokinlägget </h1>
-<p> Vill du verkligen ta bort gästbokinlägget <span class="bolditalic"> {{text}}</span> ?</p>
-<p>Inlägget skrevs  {{datum}} utav {{namn}} . </p>
-<form action="" method="POST">
-	<button class="btn" type="submit" >Ja, ta bort!</button>
-</form>
-{{/each}}
+	{{#if errors}}
+	<h2 class="titel2">Kunde inte tas bort pga fel</h2>
+	{{#each errors}}
+	<ul>
+		<li>{{this}} </li>
+	</ul>
+
+	{{/each}}
+	{{/if}}
+
+	<h1 class="titel2">Ta bort kontaktanmälan </h1>
+	<p> Vill du verkligen ta bort kontaktanmälan <span class="bolditalic"> {{resultKontakt.meddelande}}</span> ?</p>
+	<p>Inlägget skrevs {{resultKontakt.datum}} utav {{resultKontakt.namn}}
+		 med telefonnr {{resultKontakt.nummer}} och mail {{resultKontakt.email}} . </p>
+	<form action="" method="POST">
+		 <input type="hidden" name="_csrf" value="{{csrfToken}}">
+		<button class="btn" type="submit">Ja, ta bort!</button>
+	</form>
 </div>

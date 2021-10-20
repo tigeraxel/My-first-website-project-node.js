@@ -18,13 +18,16 @@
 
         <a href="/"><button class="btn btn-primary">Start</button></a>
         <a href="/Blog"><button class="btn btn-primary">Blogg</button></a>
-        <a href="/Projekt"><button class="btn btn-primary">Projekt</button></a>
         <a href="/Ommig"><button class="btn btn-primary">Om mig</button></a>
         <a href="/Gastbok"><button class="btn btn-primary">Gästbok</button></a>
         <a href="/Kontakt"><button class="btn btn-primary">Kontakt</button></a>
     </header>
     
-    {{#if session.isLoggedIn}} <p id="inloggad">Inloggad</p>
+    {{#if session.isLoggedIn}} 
+    <form method="POST" action="/loggaut" id="loggaut">
+    <button  class="btn btn-secondary" type="submit">
+        Logga ut</button>
+    </form>
      {{else}} <a href="/loggain" id="loggain"><button class="btn btn-secondary">Logga in</button></a>
      {{/if}}
 </div>

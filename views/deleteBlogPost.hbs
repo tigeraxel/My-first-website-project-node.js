@@ -1,9 +1,19 @@
 <div class="leftmargin">
-{{#each resultBlogpost}}
-<h1 class="titel2">Ta bort inlägg</h1>
-<p> Vill du verkligen ta bort inlägg <span class="bolditalic"> {{blogtitel}}</span> ?</p>
-<form action="" method="POST">
-	<button class="btn" type="submit" >Ja, ta bort!</button>
-</form>
-{{/each}}
+	{{#if errors}}
+	<h2 class="titel2">Kunde inte tas bort pga fel</h2>
+	{{#each errors}}
+	<ul>
+		<li>{{this}} </li>
+	</ul>
+
+	{{/each}}
+	{{/if}}
+
+	<h1 class="titel2">Ta bort inlägg</h1>
+	<p> Vill du verkligen ta bort inlägg <span class="bolditalic"> {{resultBlogpost.blogtitel}}</span> ?</p>
+	<form action="" method="POST">
+		<input type="hidden" name="_csrf" value="{{csrfToken}}">
+		<button class="btn" type="submit">Ja, ta bort!</button>
+	</form>
+
 </div>

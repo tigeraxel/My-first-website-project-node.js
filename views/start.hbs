@@ -1,3 +1,5 @@
+<title>Start </title>
+
 <div class="row2">
     <span class="col1">
         <menu class="socials">
@@ -20,15 +22,18 @@
                 <ion-icon name="logo-instagram"></ion-icon>
             </a> <br>
         </menu>
-        <input type="image" src="/images/Jag.jpg" alt="bild på mig" width="250" height="250" id="minbild">
+        <input type="image" src="/images/Jag.jpg" alt="bild på mig" width="200" height="250" id="minbild">
 
 
     </span>
 
     <span class="col2">
         <p id="infotext">
-            Hej det är jag som är axel!
+            
+            Välkommen till min hemsida!
             <br>
+            Här kan man läsa om mig,min blogg,
+            skriva i gästbok eller kontakta mig.
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lobortis euismod neque,
             at efficitur ante. Vivamus augue odio, ultricies quis ex vitae, posuere sodales lacus.
             Fusce pellentesque luctus sapien non pellentesque. Curabitur quam nulla, aliquam ut
@@ -53,34 +58,71 @@
         </p>
 
     </span>
-
+    {{#if errors}}
     <span class="col3">
-        <header class="titel2">Senaste Gästboksinläggen</header>
+        <header class="titel2">Kunde inte laddas upp pga fel</header>
+        
+    {{else}}
+    <span class="col3">
+        <header class="titel2">3 Senaste Gästboksinläggen</header>
+    
+    {{/if}}
 
-{{#if hasDatabaseError}}
-<p>Gästbok hittades ej</p>
+    {{#if hasDatabaseError}}
+    <p>Gästbok hittades ej</p>
 
-{{else }}
+    {{else }}
 
-{{#each resultGästbok}}
-<ul>
-    <tag class="kommentarenhetstartsida">
-        <p class="GästbokNamn2">{{namn}}:</p>
-        <p class="GästbokKommentar">{{text}}</p>
-    </tag>
-</ul>
+    {{#each resultGästbok}}
+    <ul>
+        <tag class="kommentarenhetstartsida">
+            <p class="GästbokNamn2">{{namn}}:</p>
+            <p class="GästbokKommentar">{{text}}</p>
+        </tag>
+    </ul>
 
-{{/each}}
-{{/if}}
-    <form id="submitStartsida" method="POST" action="/">
-        <label for="Namn">Namn:</label><br>
-        <input type="text" id="Namnstart" name="Namnstart"><br>
-        <label for="Kommentarstart">Kommentar:</label><br>
-        <tag id="kommentarform"><textarea rows="5" cols="35" name="Kommentarstart" id="Kommentarstart"></textarea></tag>
-        <input type="submit" value="Publicera">
+    {{/each}}
+    {{/if}}
+
+    {{#if errors.length}}
+    {{#each errors}}
+    <ul>
+        <li>{{this}} </li>
+    </ul>
+
+    {{/each}}
+
+    <div class="Bloggform">
+        <form id="blogginput" method="POST" action="/">
+
+            <label for="namn">Namn:</label><br>
+            <textarea rows="1" cols="20" name="namn" id="namn">{{resultGastbok.namn}}</textarea> <br>
+
+            <label for="Titel">Text:</label><br>
+            <textarea rows="5" cols="35" name="text" id="text">{{resultGastbok.text}}</textarea> <br>
+            <button class="btn" type="submit">Åtgärdat,Publicera!</button>
         </form>
+    </div>
 
-    </span>
+
+    {{else}}
+
+
+
+    <div class="Bloggform">
+        <form id="blogginput" method="POST" action="/">
+
+            <label for="namn">Namn:</label><br>
+            <textarea rows="1" cols="20" name="namn" id="namn"></textarea> <br>
+
+            <label for="Titel">Text:</label><br>
+            <textarea rows="5" cols="35" name="text" id="text"></textarea> <br>
+            <button class="btn" type="submit">Publicera</button>
+        </form>
+    </div>
+
+
+    {{/if}}
 
 
 
@@ -90,8 +132,6 @@
 
 
 
-<body>
-</body>
 
 
 </html>
