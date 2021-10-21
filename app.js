@@ -66,8 +66,8 @@ app.post('/loggain', async function (request, response) {
   const användarnamn = request.body.användarnamn
   const lösenord = request.body.lösenord
 
-  const validPassword= await bcrypt.compare(lösenord,ADMIN_PASSWORD)
-  const validUsername= await bcrypt.compare(användarnamn,ADMIN_USERNAME)
+  const validPassword = await bcrypt.compare(lösenord, ADMIN_PASSWORD)
+  const validUsername = await bcrypt.compare(användarnamn, ADMIN_USERNAME)
 
   if (validPassword && validUsername) {
     request.session.isLoggedIn = true
@@ -76,20 +76,19 @@ app.post('/loggain', async function (request, response) {
   } else {
     const model = {
       Ogiltig: true,
-      
+
     }
     // TODO: Display error message to the user.
-    response.render('loggain.hbs',model)
+    response.render('loggain.hbs', model)
   }
 
 })
 
 app.post('/loggaut', async function (request, response) {
 
-    request.session.isLoggedIn = false
- 
-    response.redirect('/')
+  request.session.isLoggedIn = false
 
+  response.redirect('/')
 })
 
 
@@ -106,41 +105,33 @@ const { response, urlencoded, query } = require('express');
 
 
 const db = new sqlite.Database('axeltigerberg.db')
-db.run(`CREATE TABLE IF NOT EXISTS kontakt(ID INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
-  namn TEXT NOT NULL,email TEXT,nummer TEXT,meddelande TEXT, 
-  datum DATE);`, function (err) {
+db.run(`CREATE TABLE IF NOT EXISTS contact(ID INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,email TEXT,phonenumber TEXT,message TEXT, 
+  date DATE);`, function (err) {
   if (err) {
     return console.log(err.message)
   }
-  else console.log("kontakt table created")
+  else console.log("contact table created")
 })
 
-db.run(`CREATE TABLE IF NOT EXISTS blog(postID INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
-  blogförfattare TEXT NOT NULL,blogtitel TEXT NOT NULL,blogtext TEXT NOT NULL, 
-  datum DATE);`, function (err) {
+db.run(`CREATE TABLE IF NOT EXISTS blog(ID INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
+  writer TEXT NOT NULL,title TEXT NOT NULL,text TEXT NOT NULL, 
+  date DATE);`, function (err) {
   if (err) {
     return console.log(err.message)
   }
   else console.log("Blog table created")
 })
 
-db.run(`CREATE TABLE IF NOT EXISTS gästbok(ID INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
-  namn TEXT NOT NULL,text TEXT,datum DATE);`, function (err) {
+db.run(`CREATE TABLE IF NOT EXISTS guestbook(ID INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,text TEXT,date DATE);`, function (err) {
   if (err) {
     return console.log(err.message)
   }
-  else console.log("gästbok table created")
+  else console.log("guestbook table created")
 })
 
 
-
-db.run(`CREATE TABLE IF NOT EXISTS accounts(ID INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
-  username TEXT NOT NULL,password TEXT NOT NULL);`, function (err) {
-  if (err) {
-    return console.log(err.message)
-  }
-  else console.log("accounts table created")
-})
 
 
 
@@ -148,7 +139,7 @@ db.run(`CREATE TABLE IF NOT EXISTS accounts(ID INTEGER UNIQUE PRIMARY KEY AUTOIN
 // landing page
 
 app.get('/', (req, res) => {
-  const query = "SELECT * FROM gästbok ORDER BY ID DESC LIMIT 3"
+  const query = "SELECT * FROM guestbook ORDER BY ID DESC LIMIT 3"
   db.all(query, function (error, resultGästbok) {
     if (error) {
       const model = {
@@ -173,7 +164,7 @@ app.get('/basic', (req, res) => {
 })
 
 app.get('/Start', (req, res) => {
-  const query = "SELECT * FROM kommentar ORDER BY ID DESC LIMIT 3"
+  const query = "SELECT * FROM guestbook ORDER BY ID DESC LIMIT 3"
   db.all(query, function (error, resultGastbok) {
     if (error) {
       const model = {
@@ -209,7 +200,7 @@ app.post('/', function (request, response) {
   const values = [namn, text, datum]
 
   console.log(values)
-  const query = "INSERT INTO gästbok (Namn,text,datum) VALUES (?,?,?)";
+  const query = "INSERT INTO guestbook (name,text,date) VALUES (?,?,?)";
   const errors = []
 
   //if (!request.session.isLoggedIn) {
@@ -236,7 +227,7 @@ app.post('/', function (request, response) {
 
       if (error) {
         hasDatabaseError: true
-        console.log("error insert gästbokkommentar");
+        console.log("error insert guestbook");
       }
       else {
 
@@ -260,6 +251,11 @@ app.post('/', function (request, response) {
 
 app.get('/Ommig', (req, res) => {
   res.render("ommig.hbs");
+})
+
+
+app.get('*', function (request, response) {
+  response.render("basic.hbs")
 })
 
 

@@ -12,8 +12,8 @@ var csrfProtection = csrf({ cookie: true })
 
 
 router.get('/', csrfProtection, (req, res) => {
-    const namn = "Axel"
-    const query = "SELECT * FROM kontakt ORDER BY datum DESC"
+
+    const query = "SELECT * FROM contact ORDER BY date DESC"
     db.all(query, function (error, resultKontakt) {
         if (error) {
             const model = {
@@ -37,12 +37,12 @@ router.get('/', csrfProtection, (req, res) => {
 
 router.post('/', csrfProtection, function (request, response) {
     console.log(request.body);
-    const namn = request.body.Namn;
-    const nummer = request.body.Nummer;
+    const name = request.body.Namn;
+    const phonenumber = request.body.Nummer;
     const email = request.body.email;
-    const meddelande = request.body.Meddelande;
-    var datum = new Date();
-    datum = datum.toLocaleString();
+    const message = request.body.Meddelande;
+    var date = new Date();
+    date = date.toLocaleString();
 
 
     const min_namn_längd = 2;
@@ -55,31 +55,31 @@ router.post('/', csrfProtection, function (request, response) {
     //     errors.push("Not logged in.")
     //}
 
-    if (!namn) {
+    if (!name) {
         errors.push("Det saknas ett namn.")
     }
-    else if (namn.length < min_namn_längd) {
+    else if (name.length < min_namn_längd) {
         errors.push("Ditt namn måste vara minst " + min_namn_längd + " tecken.")
     }
 
-    if (!meddelande) {
+    if (!message) {
         errors.push("Det saknas en text.")
     }
-    else if (meddelande.length < min_text_längd) {
+    else if (message.length < min_text_längd) {
         errors.push("Din text måste vara minst" + min_text_längd + " tecken.")
     }
 
-    if (!nummer) {
+    if (!phonenumber) {
         errors.push("Det saknas ett nummer.")
     }
-    else if (nummer.length < min_nummer_längd) {
+    else if (phonenumber.length < min_nummer_längd) {
         errors.push("Ditt nummer måste vara minst " + min_nummer_längd + " tecken.")
     }
     console.log(errors)
 
 
-    const query = "INSERT INTO kontakt (Namn,Nummer,email,Meddelande,datum) VALUES (?,?,?,?,?)";
-    const values = [namn, nummer, email, meddelande, datum]
+    const query = "INSERT INTO contact (name,phonenumber,email,message,date) VALUES (?,?,?,?,?)";
+    const values = [name, phonenumber, email, message, date]
     if (errors.length == 0) {
         db.run(query, values, function (error) {
 
@@ -91,10 +91,10 @@ router.post('/', csrfProtection, function (request, response) {
                 const model = {
                     errors,
                     resultKontakt: {
-                        namn,
-                        nummer,
+                        name,
+                        phonenumber,
                         email,
-                        meddelande
+                        message
                     }
                     , csrfToken: request.csrfToken()
                 }
@@ -111,10 +111,10 @@ router.post('/', csrfProtection, function (request, response) {
         const model = {
             errors,
             resultKontakt: {
-                namn,
-                nummer,
+                name,
+                phonenumber,
                 email,
-                meddelande
+                message
             }
             , csrfToken: request.csrfToken()
 
@@ -128,7 +128,7 @@ router.post('/', csrfProtection, function (request, response) {
 router.get('/:id/update', csrfProtection, function (request, response) {
 
     const id = request.params.id
-    const query = "SELECT * FROM kontakt WHERE ID = ? "
+    const query = "SELECT * FROM contact WHERE ID = ? "
     var errors = []
 
     db.get(query, id, function (error, resultKontakt) {
@@ -140,10 +140,10 @@ router.get('/:id/update', csrfProtection, function (request, response) {
             const model = {
                 errors,
                 resultKontakt: {
-                    namn,
-                    nummer,
+                    name,
+                    phonenumber,
                     email,
-                    meddelande
+                    message
                 }
                 , csrfToken: request.csrfToken()
             }
@@ -169,35 +169,35 @@ router.get('/:id/update', csrfProtection, function (request, response) {
 router.post('/:id/update', csrfProtection, function (request, response) {
     console.log(request.body);
 
-    const namn = request.body.namn;
-    const nummer = request.body.nummer;
+    const name = request.body.namn;
+    const phonenumber = request.body.nummer;
     const email = request.body.email;
-    const meddelande = request.body.Meddelande;
+    const message = request.body.Meddelande;
     const ID = request.params.id
 
     const min_namn_längd = 2;
     const min_text_längd = 10;
 
-    const values = [namn, nummer, email, meddelande, ID];
+    const values = [name, phonenumber, email, message, ID];
     console.log(values)
-    const query = "UPDATE kontakt SET namn = ?, nummer = ?, email = ?, meddelande = ? WHERE ID=?";
+    const query = "UPDATE contact SET name = ?, phonenumber = ?, email = ?, message = ? WHERE ID=?";
     const errors = []
 
     if (!request.session.isLoggedIn) {
         errors.push("Inte inloggad.")
     }
 
-    if (!namn) {
+    if (!name) {
         errors.push("Det saknas ett namn.")
     }
-    else if (namn.length < min_namn_längd) {
+    else if (name.length < min_namn_längd) {
         errors.push("Ditt namn måste vara minst " + min_namn_längd + " tecken.")
     }
 
-    if (!meddelande) {
+    if (!message) {
         errors.push("Det saknas en text.")
     }
-    else if (meddelande.length < min_text_längd) {
+    else if (message.length < min_text_längd) {
         errors.push("Din text måste vara minst" + min_text_längd + " tecken.")
     }
     console.log(errors)
@@ -212,10 +212,10 @@ router.post('/:id/update', csrfProtection, function (request, response) {
                 const model = {
                     errors,
                     resultKontakt: {
-                        namn,
-                        nummer,
+                        name,
+                        phonenumber,
                         email,
-                        meddelande
+                        message
                     }
                     , csrfToken: request.csrfToken()
                 }
@@ -233,10 +233,10 @@ router.post('/:id/update', csrfProtection, function (request, response) {
             errors,
             resultKontakt: {
                 ID,
-                namn,
+                name,
                 email,
-                nummer,
-                meddelande
+                phonenumber,
+                message
             },
             csrfToken: request.csrfToken()
         }
@@ -249,7 +249,7 @@ router.post('/:id/update', csrfProtection, function (request, response) {
 router.get('/:id/delete', csrfProtection, function (request, response) {
 
     const id = request.params.id
-    const query = "SELECT * FROM kontakt WHERE ID = ? "
+    const query = "SELECT * FROM contact WHERE ID = ? "
     const errors = []
 
     db.get(query, id, function (error, resultKontakt) {
@@ -261,10 +261,10 @@ router.get('/:id/delete', csrfProtection, function (request, response) {
             const model = {
                 errors,
                 resultKontakt: {
-                    namn,
-                    nummer,
+                    name,
+                    phonenumber,
                     email,
-                    meddelande
+                    message
                 }
                 , csrfToken: request.csrfToken()
             }
@@ -289,7 +289,7 @@ router.get('/:id/delete', csrfProtection, function (request, response) {
 router.post('/:id/delete', csrfProtection, function (request, response) {
 
     const id = request.params.id
-    const query = "DELETE FROM kontakt WHERE ID = ?"
+    const query = "DELETE FROM contact WHERE ID = ?"
     console.log("försöker ta bort kontakt")
     const errors = []
     if (!request.session.isLoggedIn) {
@@ -306,10 +306,10 @@ router.post('/:id/delete', csrfProtection, function (request, response) {
                 const model = {
                     errors,
                     resultKontakt: {
-                        namn,
-                        nummer,
+                        name,
+                        phonenumber,
                         email,
-                        meddelande
+                        message
                     }
                     , csrfToken: request.csrfToken()
                 }

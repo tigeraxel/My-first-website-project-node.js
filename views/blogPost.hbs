@@ -12,15 +12,13 @@
 {{#each resultBlogpost}}
 
 <div class="bloggsida">
-        <header class="titel2"> {{bloggtitel}} </header>
-
-        <p class="GästbokNamn">{{blogtitel}}</p>
+        <p class="GästbokNamn">{{title}}</p>
         </a><br>
-        <p class="bloggText">{{blogtext}}</p>
-        <p>Publicerat {{datum}} utav {{blogförfattare}}         
-       <a id="updatebutton" href="/Blog/{{postID}}/update"><button class="btn btn-primary">
+        <p class="bloggText">{{text}}</p>
+        <p>Publicerat {{date}} utav {{writer}}         
+       <a id="updatebutton" href="/Blog/{{ID}}/update"><button class="btn btn-primary">
                uppdatera</button></a>
-        <a id="deletebutton" href="/Blog/{{postID}}/delete"><button class="btn btn-primary">
+        <a id="deletebutton" href="/Blog/{{ID}}/delete"><button class="btn btn-primary">
                 ta bort</button></a>
 </div>
 
@@ -30,12 +28,12 @@
 {{#each resultBlogpost}}
 
 <div class="bloggsida">
-        <header class="titel2"> {{bloggtitel}} </header>
 
-        <p class="GästbokNamn">{{blogtitel}}</p>
+
+        <p class="GästbokNamn">{{title}}</p>
         </a><br>
-        <p class="bloggText">{{blogtext}}</p>
-        <p>Publicerat {{datum}} utav {{blogförfattare}}  
+        <p class="bloggText">{{text}}</p>
+        <p>Publicerat {{date}} utav {{writer}}  
 
 {{/each}}
 

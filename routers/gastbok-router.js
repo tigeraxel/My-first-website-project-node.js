@@ -7,7 +7,7 @@ var csrf = require('csurf')
 var csrfProtection = csrf({ cookie: true })
 
 router.get('/',csrfProtection, (req, res) => {
-    const query = "SELECT * FROM gästbok ORDER BY datum DESC"
+    const query = "SELECT * FROM guestbook ORDER BY date DESC"
     db.all(query, function (error, resultGastbok) {
       if (error) {
         const model = {
@@ -33,27 +33,27 @@ router.get('/',csrfProtection, (req, res) => {
   router.post('/',csrfProtection, function (request, response) {
     console.log(request.body);
 
-    const namn = request.body.namn;
+    const name = request.body.namn;
     const text = request.body.text;
-    var datum = new Date();
-    datum = datum.toLocaleString();
+    var date = new Date();
+    date = date.toLocaleString();
 
     const min_skribentnamn_längd = 2;
     const min_text_längd = 10;
 
-    const values = [namn, text,datum];
+    const values = [name, text,date];
     console.log(values)
-    const query = "INSERT INTO gästbok (Namn,text,datum) VALUES (?,?,?)";
+    const query = "INSERT INTO guestbook (name,text,date) VALUES (?,?,?)";
     const errors = []
 
     //if (!request.session.isLoggedIn) {
     //    errors.push("Not logged in.")
     //}
 
-    if (!namn) {
+    if (!name) {
         errors.push("Det saknas ett namn.")
     }
-    else if (namn.length < min_skribentnamn_längd) {
+    else if (name.length < min_skribentnamn_längd) {
         errors.push("Ditt namn måste vara minst " + min_skribentnamn_längd + " tecken.")
     }
 
@@ -91,9 +91,9 @@ router.get('/',csrfProtection, (req, res) => {
         const model = {
             errors,
             resultGastbok: {
-                namn,
+                name,
                 text,
-                datum
+                date
             },
             csrfToken: request.csrfToken()
 
@@ -107,7 +107,7 @@ router.get('/',csrfProtection, (req, res) => {
   router.get('/:id/delete',csrfProtection, function (request, response) {
 
     const id = request.params.id
-    const query = "SELECT * FROM gästbok WHERE ID = ? "
+    const query = "SELECT * FROM guestbook WHERE ID = ? "
     const errors = []
  
     db.get(query, id, function (error, resultGästbok) {
@@ -144,7 +144,7 @@ router.get('/',csrfProtection, (req, res) => {
 router.get('/:id/update',csrfProtection, function (request, response) {
 
     const id = request.params.id
-    const query = "SELECT * FROM gästbok WHERE ID = ? "
+    const query = "SELECT * FROM guestbook WHERE ID = ? "
 
     var errors=[]
     db.get(query, id, function (error, resultGastbok) {
@@ -180,26 +180,26 @@ router.get('/:id/update',csrfProtection, function (request, response) {
 router.post('/:id/update',csrfProtection, function (request, response) {
     console.log(request.body);
 
-    const namn = request.body.namn;
+    const name = request.body.namn;
     const text = request.body.text;
     const ID = request.params.id
 
     const min_skribentnamn_längd = 2;
     const min_text_längd = 10;
 
-    const values = [namn, text, ID];
+    const values = [name, text, ID];
     console.log(values)
-    const query = "UPDATE gästbok SET namn = ?, text = ? WHERE ID=?";
+    const query = "UPDATE guestbook SET name = ?, text = ? WHERE ID=?";
     const errors = []
 
     if (!request.session.isLoggedIn) {
         errors.push("Inte inloggad.")
     }
 
-    if (!namn) {
+    if (!name) {
         errors.push("Det saknas ett namn.")
     }
-    else if (namn.length < min_skribentnamn_längd) {
+    else if (name.length < min_skribentnamn_längd) {
         errors.push("Ditt namn måste vara minst " + min_skribentnamn_längd + " tecken.")
     }
 
@@ -238,7 +238,7 @@ router.post('/:id/update',csrfProtection, function (request, response) {
         const model = {
             errors,
             resultGastbok: {
-                namn,
+                name,
                 text,
                 ID
             },
@@ -253,7 +253,7 @@ router.post('/:id/update',csrfProtection, function (request, response) {
 router.post('/:id/delete',csrfProtection, function (request, response) {
 
     const id = request.params.id
-    const query = "DELETE FROM gästbok WHERE ID = ?"
+    const query = "DELETE FROM guestbook WHERE ID = ?"
     console.log("försöker ta bort gästbokinlägg")
     const errors= []
 

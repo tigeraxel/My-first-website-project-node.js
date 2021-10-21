@@ -21,13 +21,13 @@
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
 
         <label for="blogförfattare">Skribent:</label><br>
-        <textarea rows = "1" cols = "20" name = "blogförfattare" id="blogförfattare">{{resultBlogpost.blogförfattare}}</textarea>  <br>
+        <textarea rows = "1" cols = "20" name = "blogförfattare" id="blogförfattare">{{resultBlogpost.writer}}</textarea>  <br>
 
         <label for="Titel">Titel:</label><br>
-        <textarea rows = "1" cols = "40" name = "blogtitel" id="blogtitel">{{resultBlogpost.blogtitel}}</textarea>  <br>
+        <textarea rows = "1" cols = "40" name = "blogtitel" id="blogtitel">{{resultBlogpost.title}}</textarea>  <br>
 
         <label for="Meddelande">Text:</label><br>
-        <textarea rows = "12" cols = "90" name = "blogtext" id="blogtext">{{resultBlogpost.blogtext}}</textarea>
+        <textarea rows = "12" cols = "90" name = "blogtext" id="blogtext">{{resultBlogpost.text}}</textarea>
         <button class="btn" type="submit" >Publicera!</button>
     </form>
 </div>

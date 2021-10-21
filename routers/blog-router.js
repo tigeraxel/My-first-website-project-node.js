@@ -7,13 +7,13 @@ var csrf = require('csurf')
 var csrfProtection = csrf({ cookie: true })
 
 router.get('/', (req, res) => {
-    const query = "SELECT * FROM blog ORDER BY datum DESC"
+    const query = "SELECT * FROM blog ORDER BY date DESC"
     db.all(query, function (error, resultBlog) {
         if (error) {
             const model = {
                 hasDatabaseError: true,
                 resultBlog: [],
-                
+
 
             }
             res.render("blog.hbs", model)
@@ -38,42 +38,42 @@ router.get('/createBlogPost', csrfProtection, (req, res) => {
 
 router.post('/createBlogPost', csrfProtection, function (request, response) {
     console.log(request.body);
-    const blogförfattare = request.body.blogförfattare;
-    const blogtitel = request.body.blogtitel;
-    const blogtext = request.body.blogtext;
-    var datum = new Date();
-    datum = datum.toLocaleString();
+    const writer = request.body.blogförfattare;
+    const title = request.body.blogtitel;
+    const text = request.body.blogtext;
+    var date = new Date();
+    date = date.toLocaleString();
     const min_skribentnamn_längd = 2;
     const min_titel_längd = 2;
     const min_text_längd = 10;
 
-    const values = [blogförfattare, blogtitel, blogtext, datum];
+    const values = [writer, title, text, date];
     console.log(values)
-    const query = "INSERT INTO blog (blogförfattare,blogtitel,blogtext,datum) VALUES (?,?,?,?)";
+    const query = "INSERT INTO blog (writer,title,text,date) VALUES (?,?,?,?)";
     const errors = []
 
     if (!request.session.isLoggedIn) {
         errors.push("Inte inloggad.")
     }
 
-    if (!blogförfattare) {
+    if (!writer) {
         errors.push("Det saknas en skrivbent.")
     }
-    else if (blogförfattare.length < min_skribentnamn_längd) {
+    else if (writer.length < min_skribentnamn_längd) {
         errors.push("Ditt skrivbentnamn måste vara minst " + min_skribentnamn_längd + " tecken.")
     }
 
-    if (!blogtitel) {
+    if (!title) {
         errors.push("Det saknas en blogtitel.")
     }
-    else if (blogtitel.length < min_titel_längd) {
+    else if (title.length < min_titel_längd) {
         errors.push("Din titel måste vara minst" + min_titel_längd + " tecken.")
     }
 
-    if (!blogtext) {
+    if (!text) {
         errors.push("Det saknas en blogtext.")
     }
-    else if (blogtext.length < min_text_längd) {
+    else if (text.length < min_text_längd) {
         errors.push("Din text måste vara minst" + min_text_längd + " tecken.")
     }
     console.log(errors)
@@ -88,9 +88,9 @@ router.post('/createBlogPost', csrfProtection, function (request, response) {
                 const model = {
                     errors,
                     csrfToken: request.csrfToken()
-                    
-                    }
-                    
+
+                }
+
                 response.render("createBlogPost.hbs", model)
             }
             else {
@@ -104,9 +104,9 @@ router.post('/createBlogPost', csrfProtection, function (request, response) {
         const model = {
             errors,
             resultBlogpost: {
-                blogförfattare,
-                blogtitel,
-                blogtext
+                writer,
+                title,
+                text
             },
             csrfToken: request.csrfToken()
 
@@ -121,22 +121,22 @@ router.post('/createBlogPost', csrfProtection, function (request, response) {
 router.get('/:id', function (request, response) {
 
 
-    const query = "SELECT * FROM blog WHERE postID = ? LIMIT 1"
-    const id = request.params.id
+    const query = "SELECT * FROM blog WHERE ID = ? LIMIT 1"
+    const ID = request.params.id
     var errors = []
 
-    db.all(query, id, function (error, resultBlogpost) {
+    db.all(query, ID, function (error, resultBlogpost) {
         if (error) {
             // TODO: Handle error.
             console.log("Error")
-            console.log(id)
+            console.log(ID)
             errors.push("internt databas fel")
             const model = {
                 errors,
                 csrfToken: request.csrfToken()
-                
-                }
-                
+
+            }
+
             response.render("blogpost.hbs", model)
 
         }
@@ -145,7 +145,7 @@ router.get('/:id', function (request, response) {
                 resultBlogpost
             }
             console.log(query)
-            console.log(id)
+            console.log(ID)
 
             response.render('blogPost.hbs', model)
         }
@@ -153,34 +153,34 @@ router.get('/:id', function (request, response) {
 
 })
 
-router.get('/:id/update',csrfProtection, function (request, response) {
+router.get('/:id/update', csrfProtection, function (request, response) {
 
-    const id = request.params.id
-    const query = "SELECT * FROM blog WHERE postID = ? "
-    var errors=[]
+    const ID = request.params.id
+    const query = "SELECT * FROM blog WHERE ID = ? "
+    var errors = []
 
-    db.get(query, id, function (error, resultBlogpost) {
+    db.get(query, ID, function (error, resultBlogpost) {
         if (error) {
             // TODO: Handle error.
             console.log("Error")
-            console.log(id)
+            console.log(ID)
             errors.push("internt databas fel")
             const model = {
                 errors,
                 csrfToken: request.csrfToken()
-                
-                }
-                
+
+            }
+
             response.render("updateBlogPost.hbs", model)
 
         }
         else {
             const model = {
                 resultBlogpost,
-                csrfToken : request.csrfToken()
+                csrfToken: request.csrfToken()
             }
             console.log(query)
-            console.log(id)
+            console.log(ID)
             response.render('updateBlogPost.hbs', model)
 
         }
@@ -189,47 +189,47 @@ router.get('/:id/update',csrfProtection, function (request, response) {
 })
 
 
-router.post('/:id/update',csrfProtection, function (request, response) {
+router.post('/:id/update', csrfProtection, function (request, response) {
     console.log(request.body);
-    const blogförfattare = request.body.blogförfattare;
-    const blogtitel = request.body.blogtitel;
-    const blogtext = request.body.blogtext;
-    const id = request.params.id
-    const postID = request.params.id
+    const writer = request.body.blogförfattare;
+    const title = request.body.blogtitel;
+    const text = request.body.blogtext;
+    const ID = request.params.id
+    
 
-    var datum = new Date();
-    datum = datum.toLocaleString();
+    var date = new Date();
+    date = date.toLocaleString();
     const min_skribentnamn_längd = 2;
     const min_titel_längd = 2;
     const min_text_längd = 10;
 
-    const values = [blogförfattare, blogtitel, blogtext, id];
+    const values = [writer, title, text, ID];
     console.log(values)
-    const query = "UPDATE blog SET blogförfattare = ?, blogtitel = ?, blogtext = ? WHERE postID=?";
+    const query = "UPDATE blog SET writer = ?, title = ?, text = ? WHERE ID=?";
     const errors = []
 
     if (!request.session.isLoggedIn) {
         errors.push("Inte inloggad.")
     }
 
-    if (!blogförfattare) {
+    if (!writer) {
         errors.push("Det saknas en skrivbent.")
     }
-    else if (blogförfattare.length < min_skribentnamn_längd) {
+    else if (writer.length < min_skribentnamn_längd) {
         errors.push("Ditt skrivbentnamn måste vara minst " + min_skribentnamn_längd + " tecken.")
     }
 
-    if (!blogtitel) {
+    if (!title) {
         errors.push("Det saknas en blogtitel.")
     }
-    else if (blogtitel.length < min_titel_längd) {
+    else if (title.length < min_titel_längd) {
         errors.push("Din titel måste vara minst" + min_titel_längd + " tecken.")
     }
 
-    if (!blogtext) {
+    if (!text) {
         errors.push("Det saknas en blogtext.")
     }
-    else if (blogtext.length < min_text_längd) {
+    else if (text.length < min_text_längd) {
         errors.push("Din blogtext måste vara minst" + min_text_längd + " tecken.")
     }
     console.log(errors)
@@ -243,7 +243,7 @@ router.post('/:id/update',csrfProtection, function (request, response) {
             }
             else {
 
-                response.redirect('/Blog/' + id)
+                response.redirect('/Blog/' + ID)
             }
         })
     }
@@ -252,10 +252,10 @@ router.post('/:id/update',csrfProtection, function (request, response) {
         const model = {
             errors,
             resultBlogpost: {
-                blogförfattare,
-                blogtitel,
-                blogtext,
-                postID
+                writer,
+                title,
+                text,
+                ID
             },
             csrfToken: request.csrfToken()
         }
@@ -265,26 +265,26 @@ router.post('/:id/update',csrfProtection, function (request, response) {
 })
 
 
-router.get('/:id/delete',csrfProtection, function (request, response) {
+router.get('/:id/delete', csrfProtection, function (request, response) {
 
-    const id = request.params.id
-    const query = "SELECT * FROM blog WHERE postID = ? "
+    const ID = request.params.id
+    const query = "SELECT * FROM blog WHERE ID = ? "
 
 
-    db.all(query, id, function (error, resultBlogpost) {
+    db.all(query, ID, function (error, resultBlogpost) {
         if (error) {
             // TODO: Handle error.
             console.log("Error")
-            console.log(id)
+            console.log(ID)
 
         }
         else {
             const model = {
                 resultBlogpost,
-                csrfToken : request.csrfToken()
+                csrfToken: request.csrfToken()
             }
             console.log(query)
-            console.log(id)
+            console.log(ID)
             response.render('deleteBlogPost.hbs', model)
 
         }
@@ -292,10 +292,10 @@ router.get('/:id/delete',csrfProtection, function (request, response) {
 
 })
 
-router.post('/:id/delete',csrfProtection, function (request, response) {
+router.post('/:id/delete', csrfProtection, function (request, response) {
 
-    const id = request.params.id
-    const query = "DELETE FROM blog WHERE postID = ?"
+    const ID = request.params.id
+    const query = "DELETE FROM blog WHERE ID = ?"
     console.log("försöker ta bort")
     const errors = []
 
@@ -304,25 +304,25 @@ router.post('/:id/delete',csrfProtection, function (request, response) {
     }
 
     if (errors == 0)
-        db.all(query, id, function (error) {
+        db.all(query, ID, function (error) {
             if (error) {
                 // TODO: Handle error.
                 console.log("Error")
-                console.log(id)
+                console.log(ID)
 
             }
             else {
-                response.redirect('/')
+                response.redirect('/Blog')
 
             }
         })
     else {
         const model = {
             errors,
-            csrfToken : request.csrfToken()
+            csrfToken: request.csrfToken()
         }
         console.log(query)
-        console.log(id)
+        console.log(ID)
         response.render('deleteBlogPost.hbs', model)
 
     }

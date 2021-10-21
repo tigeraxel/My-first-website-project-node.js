@@ -16,7 +16,7 @@
     <form id="blogginput" method="POST" action="/Gastbok/{{resultGastbok.ID}}/update">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <label for="namn">Namn:</label><br>
-        <textarea rows = "1" cols = "20" name = "namn" id="namn" >{{resultGastbok.namn}}</textarea>  <br>
+        <textarea rows = "1" cols = "20" name = "namn" id="namn" >{{resultGastbok.name}}</textarea>  <br>
 
         <label for="Titel">Text:</label><br>
         <textarea rows = "5" cols = "60" name = "text" id="text">{{resultGastbok.text}}</textarea>  <br>

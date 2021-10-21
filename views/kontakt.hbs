@@ -35,9 +35,9 @@
     <table>
 
         <p class="kontaktenhet">
-        <p class="GästbokNamn">{{namn}}, {{nummer}}, {{email}}:</p><br>
-        <p class="GästbokKommentar">{{meddelande}}</p>
-        <p class="skickat">skickat {{datum}}<span>
+        <p class="GästbokNamn">{{name}}, {{phonenumber}}, {{email}}:</p><br>
+        <p class="GästbokKommentar">{{message}}</p>
+        <p class="skickat">skickat {{date}}<span>
                 <a href="/kontakt/{{ID}}/update"><button class="btn">uppdatera</button></a>
                 <a href="/kontakt/{{ID}}/delete"><button class="btn">ta bort</button></a> </span>
         </p>
@@ -62,14 +62,14 @@
     <form id="Kontaktinput" method="POST" action="/kontakt">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <label for="Namn">Namn:</label><br>
-        <input type="text" id="Namn" name="Namn" value={{resultKontakt.namn}}><br>
+        <input type="text" id="Namn" name="Namn" value={{resultKontakt.name}}><br>
 
         <label for="Nummer">Nummer:</label><br>
-        <input type="text" id="Nummer" name="Nummer" value={{resultKontakt.nummer}}><br>
+        <input type="text" id="Nummer" name="Nummer" value={{resultKontakt.phonenumber}}><br>
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" value={{resultKontakt.email}}><br>
         <label for="Meddelande">Meddelande:</label><br>
-        <textarea rows="5" cols="60" name="Meddelande" id="Meddelande">{{resultKontakt.meddelande}}</textarea>
+        <textarea rows="5" cols="60" name="Meddelande" id="Meddelande">{{resultKontakt.message}}</textarea>
         <input type="submit" value="Skicka">
     </form>
 </div>

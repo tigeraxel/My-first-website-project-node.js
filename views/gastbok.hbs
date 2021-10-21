@@ -19,7 +19,7 @@
     <form id="commentinput" method="POST" action="/gastbok">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <label for="Namn">Namn:</label><br>
-        <input type="text" id="namn" name="namn" value={{resultGastbok.namn}}><br>
+        <input type="text" id="namn" name="namn" value={{resultGastbok.name}}><br>
         <label for="text">text:</label><br>
         <textarea rows = "5" cols = "60" name = "text" id="text">{{resultGastbok.text}}</textarea>
         <input type="submit" value="Publicera">
@@ -38,10 +38,10 @@
 {{#each resultGastbok}}
 <ul>
     <tag class="kommentarenhet">
-        <p class="GästbokNamn">{{namn}}</p>
+        <p class="GästbokNamn">{{name}}</p>
         <p class="Gästbokkommentar">{{text}}</p>
     </tag>
-    <p>skickat {{datum}} <span><br><a href="/gastbok/{{ID}}/update">
+    <p>skickat {{date}} <span><br><a href="/gastbok/{{ID}}/update">
     <button class="btn">uppdatera</button></a>
         <a  href="/gastbok/{{ID}}/delete">
         <button class="btn">ta bort</button></a> </span></p>
@@ -54,10 +54,10 @@
 {{#each resultGastbok}}
 <ul>
     <tag class="kommentarenhet">
-        <p class="GästbokNamn">{{namn}}</p>
+        <p class="GästbokNamn">{{name}}</p>
         <p class="Gästbokkommentar">{{text}}</p>
     </tag>
-    <p>skickat {{datum}}
+    <p>skickat {{date}}
 
 </ul>
 
