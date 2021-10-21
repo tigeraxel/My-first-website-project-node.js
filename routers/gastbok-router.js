@@ -159,7 +159,7 @@ router.get('/:id/update',csrfProtection, function (request, response) {
                 
                 }
                 
-            response.render("updategastbok.hbs", model)
+            response.render("updateGastbok.hbs", model)
 
         }
         else {
@@ -169,7 +169,7 @@ router.get('/:id/update',csrfProtection, function (request, response) {
             }
             console.log(query)
             console.log(id)
-            response.render('updategastbok.hbs', model)
+            response.render('updateGastbok.hbs', model)
 
         }
     })
@@ -224,7 +224,7 @@ router.post('/:id/update',csrfProtection, function (request, response) {
                 
                 }
                 
-            response.render("updategastbok.hbs", model)
+            response.render("updateGastbok.hbs", model)
                 
             }
             else {
@@ -245,7 +245,7 @@ router.post('/:id/update',csrfProtection, function (request, response) {
             csrfToken: request.csrfToken()
 
         }
-        response.render("updategastbok.hbs", model)
+        response.render("updateGastbok.hbs", model)
     }
 
 })
