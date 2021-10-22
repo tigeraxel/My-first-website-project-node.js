@@ -13,22 +13,14 @@
 {{/each}}
 {{/if}}
 
-{{#if session.isLoggedIn}}
+
 
 
 {{#if hasDatabaseError }}
 <p>Kontaktanmälningar hittades ej</p>
 {{else}}
 
-{{#if errors}}
-<h2 class="titel2">Kunde inte laddas upp pga fel</h2>
-{{#each errors}}
-<ul>
-    <li>{{this}} </li>
-</ul>
- 
-{{/each}}
-{{/if}}
+{{#if session.isLoggedIn}}
 
 {{#each resultKontakt}}
 <div class="leftmargin">
@@ -49,10 +41,11 @@
 
 {{/each}}
 {{/if}}
+{{/if}}
 
 
 
-{{else}}
+
 
 <p class="leftmargin"> För att kontakta mig så fyll helst i formuläret nedan. <br>
     Enbart akuta ärenden nås jag på 070123456789. Ring aldrig efter 19.00! </p>
@@ -74,4 +67,3 @@
     </form>
 </div>
 
-{{/if}}

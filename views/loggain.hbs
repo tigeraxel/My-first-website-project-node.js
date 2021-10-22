@@ -8,6 +8,7 @@
     {{/if}}
 <div class="inlogginput">
     <form id="InloggInput" method="POST" action="/loggain">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <label for="användarnamn">Användarnamn:</label><br>
         <input type="text" id="användarnamn" name="användarnamn"><br>
         <label for="Lösenord">Lösenord:</label><br>

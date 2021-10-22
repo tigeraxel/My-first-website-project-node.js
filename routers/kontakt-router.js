@@ -252,6 +252,7 @@ router.get('/:id/delete', csrfProtection, function (request, response) {
     const query = "SELECT * FROM contact WHERE ID = ? "
     const errors = []
 
+
     db.get(query, id, function (error, resultKontakt) {
         if (error) {
             // TODO: Handle error.
@@ -295,6 +296,11 @@ router.post('/:id/delete', csrfProtection, function (request, response) {
     if (!request.session.isLoggedIn) {
         errors.push("Inte inloggad.")
     }
+    const name = request.body.namn;
+    const phonenumber = request.body.nummer;
+    const email = request.body.email;
+    const message = request.body.Meddelande;
+    const ID = request.params.id
 
     if (errors == 0)
         db.all(query, id, function (error) {
@@ -323,6 +329,12 @@ router.post('/:id/delete', csrfProtection, function (request, response) {
     else {
         const model = {
             errors,
+            resultKontakt: {
+                name,
+                phonenumber,
+                email,
+                message
+            },
             csrfToken: request.csrfToken()
         }
         console.log(query)

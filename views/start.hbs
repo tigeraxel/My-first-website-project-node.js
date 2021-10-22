@@ -85,7 +85,7 @@
 
     <div class="Bloggform">
         <form id="blogginput" method="POST" action="/">
-
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
             <label for="namn">Namn:</label><br>
             <textarea rows="1" cols="20" name="namn" id="namn">{{resultGastbok.name}}</textarea> <br>
 
@@ -102,7 +102,7 @@
 
     <div class="Bloggform">
         <form id="blogginput" method="POST" action="/">
-
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
             <label for="namn">Namn:</label><br>
             <textarea rows="1" cols="20" name="namn" id="namn"></textarea> <br>
 

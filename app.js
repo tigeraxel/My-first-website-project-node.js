@@ -56,12 +56,16 @@ const ADMIN_PASSWORD = '$2a$10$WSBKk9IYS19ekjJyoU2z2uJy4ueQvEEVMnq/IXh05BVlea0pc
 //getHashCode();
 
 
-app.get('/loggain', (req, res) => {
-  res.render("loggain.hbs");
+app.get('/loggain',csrfProtection, function(req, res) {
+  const model = {
+    csrfToken: req.csrfToken()
+
+  }
+  res.render("loggain.hbs",model);
 })
 
 
-app.post('/loggain', async function (request, response) {
+app.post('/loggain',csrfProtection, async function (request, response) {
 
   const användarnamn = request.body.användarnamn
   const lösenord = request.body.lösenord
@@ -76,7 +80,7 @@ app.post('/loggain', async function (request, response) {
   } else {
     const model = {
       Ogiltig: true,
-
+      csrfToken: req.csrfToken()
     }
     // TODO: Display error message to the user.
     response.render('loggain.hbs', model)
@@ -138,20 +142,22 @@ db.run(`CREATE TABLE IF NOT EXISTS guestbook(ID INTEGER UNIQUE PRIMARY KEY AUTOI
 
 // landing page
 
-app.get('/', (req, res) => {
+app.get('/',csrfProtection,function (req, res) {
   const query = "SELECT * FROM guestbook ORDER BY ID DESC LIMIT 3"
   db.all(query, function (error, resultGästbok) {
     if (error) {
       const model = {
         hasDatabaseError: true,
-        resultGästbok: []
+        resultGästbok: [],
+        csrfToken: req.csrfToken()
       }
       res.render("gastbok.hbs", model)
     }
     else {
       const model = {
         hasDatabaseError: false,
-        resultGästbok
+        resultGästbok,
+        csrfToken: req.csrfToken()
       }
       console.log(model.resultGästbok)
       res.render("start.hbs", model)
@@ -163,7 +169,7 @@ app.get('/basic', (req, res) => {
   res.render("basic");
 })
 
-app.get('/Start', (req, res) => {
+app.get('/Start',csrfProtection,function (req, res) {
   const query = "SELECT * FROM guestbook ORDER BY ID DESC LIMIT 3"
   db.all(query, function (error, resultGastbok) {
     if (error) {
@@ -176,7 +182,8 @@ app.get('/Start', (req, res) => {
     else {
       const model = {
         hasDatabaseError: false,
-        resultGastbok
+        resultGastbok,
+        csrfToken: req.csrfToken()
       }
       console.log(model.resultGastbok)
       res.render("start.hbs", model)
@@ -188,7 +195,7 @@ app.get('/Start', (req, res) => {
 
 
 
-app.post('/', function (request, response) {
+app.post('/',csrfProtection, function (request, response) {
   console.log(request.body);
   const namn = request.body.namn;
   const text = request.body.text;
@@ -242,7 +249,8 @@ app.post('/', function (request, response) {
       resultGastbok: {
         namn,
         text
-      }
+      },
+      csrfToken: request.csrfToken()
     }
     response.render("start.hbs", model)
   }

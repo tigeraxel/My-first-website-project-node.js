@@ -12,9 +12,7 @@
 {{/each}}
 {{/if}}
 
-{{#if session.isLoggedIn}}
 
-{{else}}
 <div class="kommentarform">
     <form id="commentinput" method="POST" action="/gastbok">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
@@ -25,7 +23,7 @@
         <input type="submit" value="Publicera">
     </form>
 </div>
-{{/if}}
+
 
 
 {{#if hasDatabaseError}}
