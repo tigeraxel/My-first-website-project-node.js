@@ -7,7 +7,9 @@ const db = new sqlite.Database('axeltigerberg.db')
 var csrf = require('csurf')
 var csrfProtection = csrf({ cookie: true })
 
-
+const min_namn_längd = 2;
+const min_text_längd = 10;
+const min_nummer_längd = 5
 //const mainApp = require("../app")
 
 
@@ -44,10 +46,6 @@ router.post('/', csrfProtection, function (request, response) {
     var date = new Date();
     date = date.toLocaleString();
 
-
-    const min_namn_längd = 2;
-    const min_text_längd = 10;
-    const min_nummer_längd = 5
 
     const errors = []
 
@@ -175,8 +173,6 @@ router.post('/:id/update', csrfProtection, function (request, response) {
     const message = request.body.Meddelande;
     const ID = request.params.id
 
-    const min_namn_längd = 2;
-    const min_text_längd = 10;
 
     const values = [name, phonenumber, email, message, ID];
     console.log(values)

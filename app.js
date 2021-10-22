@@ -45,6 +45,9 @@ app.use('/kontakt', kontaktRouter)
 
 const ADMIN_USERNAME = '$2a$10$Fzv3BL4qUi0AJFhNsQwoEe9RxMSJaN34tldi7YVQhCU8gDjMD0tvq'
 const ADMIN_PASSWORD = '$2a$10$WSBKk9IYS19ekjJyoU2z2uJy4ueQvEEVMnq/IXh05BVlea0pcHrlS'
+const min_skribentnamn_längd = 2;
+const min_text_längd = 10;
+
 
 //async function getHashCode(){
 //const username= await bcrypt.hash('Axel',10)
@@ -80,7 +83,7 @@ app.post('/loggain',csrfProtection, async function (request, response) {
   } else {
     const model = {
       Ogiltig: true,
-      csrfToken: req.csrfToken()
+      csrfToken: request.csrfToken()
     }
     // TODO: Display error message to the user.
     response.render('loggain.hbs', model)
@@ -201,8 +204,7 @@ app.post('/',csrfProtection, function (request, response) {
   const text = request.body.text;
   var datum = new Date();
   datum = datum.toLocaleString();
-  const min_skribentnamn_längd = 2;
-  const min_text_längd = 10;
+
 
   const values = [namn, text, datum]
 

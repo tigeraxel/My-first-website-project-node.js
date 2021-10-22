@@ -6,6 +6,10 @@ const db = new sqlite.Database('axeltigerberg.db')
 var csrf = require('csurf')
 var csrfProtection = csrf({ cookie: true })
 
+const min_skribentnamn_längd = 2;
+const min_text_längd = 10;
+
+
 router.get('/',csrfProtection, (req, res) => {
     const query = "SELECT * FROM guestbook ORDER BY date DESC"
     db.all(query, function (error, resultGastbok) {
@@ -37,9 +41,6 @@ router.get('/',csrfProtection, (req, res) => {
     const text = request.body.text;
     var date = new Date();
     date = date.toLocaleString();
-
-    const min_skribentnamn_längd = 2;
-    const min_text_längd = 10;
 
     const values = [name, text,date];
     console.log(values)
@@ -183,9 +184,6 @@ router.post('/:id/update',csrfProtection, function (request, response) {
     const name = request.body.namn;
     const text = request.body.text;
     const ID = request.params.id
-
-    const min_skribentnamn_längd = 2;
-    const min_text_längd = 10;
 
     const values = [name, text, ID];
     console.log(values)
