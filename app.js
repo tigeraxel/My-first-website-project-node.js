@@ -1,6 +1,3 @@
-
-
-
 const express = require('express');
 const expressHandlebars = require('express-handlebars');
 const path = require('path');
@@ -11,6 +8,8 @@ app.use(express.urlencoded({
   extended: false
 }))
 const expressSession = require('express-session')
+const connectSqlite3= require('connect-sqlite3')
+const SQLiteStore = connectSqlite3(expressSession)
 var bcrypt = require('bcryptjs');
 
 var cookieParser = require('cookie-parser')
@@ -26,17 +25,19 @@ const kontaktRouter = require('./routers/kontakt-router')
 
 
 app.use(expressSession({
+  store: new SQLiteStore ({db: "axeltigerberg.db"}),
   secret: "hemlighetenärenhemlighet",
-  saveUninitialized: true,
-  resave: true,
-  // TODO: Save the sessions in a session store.
+  saveUninitialized: false,
+  resave: false,
+  
 }))
 
 app.use(function (request, response, next) {
-  // Make the session available to all views.
   response.locals.session = request.session
   next()
 })
+
+
 
 app.use('/Blog', blogRouter)
 app.use('/gastbok', gastbokRouter)
@@ -109,9 +110,9 @@ app.engine('hbs', expressHandlebars({
 app.set("view engine", "hbs");
 const sqlite = require('sqlite3');
 const { response, urlencoded, query } = require('express');
-
-
 const db = new sqlite.Database('axeltigerberg.db')
+
+
 db.run(`CREATE TABLE IF NOT EXISTS contact(ID INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,email TEXT,phonenumber TEXT,message TEXT, 
   date DATE);`, function (err) {
